@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras.models import Model
 import scipy
-import os
 
 
 # Get原model的AVG POOLING之前的层和最后层的Weights
@@ -29,7 +28,7 @@ def ResNet_CAM(img_path, model, w1, w2, size=512, channels=2048):
 
 
 # 制图
-def plot_ResNet_CAM(img_path, model, w1, w2, index):
+def plot_ResNet_CAM(img_path, model, w1, w2, index, size=512, channels=2048):
     im = np.squeeze(img_path)
     fig = plt.figure()
     ax1 = plt.subplot(1, 2, 1)
@@ -38,7 +37,8 @@ def plot_ResNet_CAM(img_path, model, w1, w2, index):
     plt.axis('off')
     ax2 = plt.subplot(1, 2, 2)
     p2 = ax2.imshow(im, alpha=0.4)
-    CAM = ResNet_CAM(img_path, model, w1, w2)
+    CAM = ResNet_CAM(img_path, model, w1, w2, size=size, channels=channels)
+    CAM = - (CAM - CAM.min()) / (CAM.max() - CAM.min()) + 1
     p3 = ax2.imshow(CAM, cmap='jet', alpha=0.6)
     plt.title('Attention Map (Model 1)')
     plt.axis('off')
@@ -48,4 +48,5 @@ def plot_ResNet_CAM(img_path, model, w1, w2, index):
 
 
 if __name__ == '__main__':
+    # TODO
     pass

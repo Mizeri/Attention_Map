@@ -3,7 +3,7 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Model
 
 
-def get_model(model_type=1, model_path):
+def get_model(model_path, model_type=1):
     if model_type == 1:
         base = keras.applications.resnet_v2.ResNet152V2(
                 input_shape=(512, 512, 3),
@@ -27,3 +27,9 @@ def get_model(model_type=1, model_path):
     model = Model(inputs=base.input, outputs=x)
     model.load_weights(model_path)
     model.compile(loss='mse', optimizer='adam', metrics=['mae'])
+    return model
+
+
+if __name__ == '__main__':
+    a = get_model('/Users/zhaoqian/Downloads/results_refrac_error_pred/results/model1.h5', 1)
+    a.summary()

@@ -55,4 +55,5 @@ def data_to_generator(img_path, csv_path, test_size=197, seed=2021):
 
 
 if __name__ == '__main__':
+    # TODO
     pass
