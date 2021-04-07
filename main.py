@@ -12,7 +12,7 @@ if __name__ == '__main__':
     img_path = '/Users/zhaoqian/Downloads/results_refrac_error_pred/results/data'
     csv_path = '/Users/zhaoqian/Downloads/results_refrac_error_pred/results/se.csv'
     model_loc = '/Users/zhaoqian/Downloads/results_refrac_error_pred/results'
-    test_size = 1
+    test_size = 2
     test_generator, df_test = data_to_generator(img_path, csv_path, test_size, 2021)
 
     for i in range(1, 4):
@@ -27,11 +27,11 @@ if __name__ == '__main__':
                 n = df_test.loc[k, 'file_name'][65:69]
                 start = time.time()
                 if i == 1:
-                    a, b = plot_ResNet_CAM(j[0], ResNet_model, w1, w2, n, 512, 2048)
+                    a, b = plot_ResNet_CAM(j[0], ResNet_model, w1, w2, n, 512, 2048, i)
                 elif i == 2:
-                    a, b = plot_ResNet_CAM(j[0], ResNet_model, w1, w2, n, 448, 2048)
+                    a, b = plot_ResNet_CAM(j[0], ResNet_model, w1, w2, n, 448, 2048, i)
                 elif i == 3:
-                    a, b = plot_ResNet_CAM(j[0], ResNet_model, w1, w2, n, 448, 1536)
+                    a, b = plot_ResNet_CAM(j[0], ResNet_model, w1, w2, n, 448, 1536, i)
                 end = time.time()
                 plt.savefig(f'{n}_model{i}.png', bbox_inches='tight')
                 print(f'[+]{n}_model{i}.png')

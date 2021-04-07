@@ -28,7 +28,7 @@ def ResNet_CAM(img_path, model, w1, w2, size=512, channels=2048):
 
 
 # 制图
-def plot_ResNet_CAM(img_path, model, w1, w2, index, size=512, channels=2048):
+def plot_ResNet_CAM(img_path, model, w1, w2, index, size=512, channels=2048, i=1):
     im = np.squeeze(img_path)
     fig = plt.figure()
     ax1 = plt.subplot(1, 2, 1)
@@ -37,14 +37,16 @@ def plot_ResNet_CAM(img_path, model, w1, w2, index, size=512, channels=2048):
     plt.axis('off')
     ax2 = plt.subplot(1, 2, 2)
     p2 = ax2.imshow(im, alpha=0.4)
-    CAM = ResNet_CAM(img_path, model, w1, w2, size=size, channels=channels)
-    CAM = - (CAM - CAM.min()) / (CAM.max() - CAM.min()) + 1
-    p3 = ax2.imshow(CAM, cmap='jet', alpha=0.6)
-    plt.title('Attention Map (Model 1)')
+    cam = ResNet_CAM(img_path, model, w1, w2, size=size, channels=channels)
+    v_min = cam.min()
+    v_max = cam.max()
+    cam = (cam - v_min) / (v_max - v_min)
+    p3 = ax2.imshow(cam, cmap='jet', alpha=0.6)
+    plt.title(f'Attention Map (Model {i})')
     plt.axis('off')
     colorAx = fig.add_axes([0.95, 0.25, 0.02, 0.5])
     cb = plt.colorbar(p3, cax=colorAx, extend='max')
-    return CAM.min(), CAM.max()
+    return v_min, v_max
 
 
 if __name__ == '__main__':
