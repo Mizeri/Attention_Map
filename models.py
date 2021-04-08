@@ -9,21 +9,35 @@ def get_model(model_path, model_type=1):
                 input_shape=(512, 512, 3),
                 include_top=False,
                 pooling='avg')
+        x = base.output
+        x = Dense(1024, activation='relu')(x)
+        x = Dense(1, activation='relu')(x)
     elif model_type == 2:
         base = keras.applications.inception_v3.InceptionV3(
             input_shape=(512, 512, 3),
             include_top=False,
             pooling='avg')
+        x = base.output
+        x = Dense(1024, activation='relu')(x)
+        x = Dense(1, activation='relu')(x)
     elif model_type == 3:
         base = keras.applications.inception_resnet_v2.InceptionResNetV2(
             input_shape=(512, 512, 3),
             include_top=False,
             pooling='avg')
+        x = base.output
+        x = Dense(1024, activation='relu')(x)
+        x = Dense(1, activation='relu')(x)
+    elif model_type == 4:
+        base = keras.applications.resnet.ResNet50(
+            input_shape=(512, 512, 3),
+            include_top = False,
+            pooling='avg')
+        x = base.output
+        x = Dense(32, activation='relu')(x)
+        x = Dense(1, activation='relu')(x)
     else:
-        raise ValueError('model_type should be 1, 2 or 3')
-    x = base.output
-    x = Dense(1024, activation='relu')(x)
-    x = Dense(1, activation='relu')(x)
+        raise ValueError('model_type should be 1, 2, 3 or 4')
     model = Model(inputs=base.input, outputs=x)
     model.load_weights(model_path)
     model.compile(loss='mse', optimizer='adam', metrics=['mae'])
